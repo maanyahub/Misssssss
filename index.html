@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Missing You - Pixel 8a Edition</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto:wght@300;400&display=swap');
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body, html {
+            height: 100%;
+            font-family: 'Roboto', sans-serif;
+            background-color: #121212;
+            color: #e0e0e0;
+            overflow: hidden;
+        }
+
+        .container {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 2rem 1.5rem;
+            background: linear-gradient(135deg, #1a237e, #311b92);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: #fff;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        p {
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        #loveQuote {
+            font-style: italic;
+            font-weight: 300;
+            opacity: 0;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+        }
+
+        .cta-button {
+            background: linear-gradient(45deg, #ff6b6b, #feca57);
+            border: none;
+            padding: 15px 30px;
+            color: white;
+            border-radius: 50px;
+            font-family: 'Roboto', sans-serif;
+            font-weight: bold;
+            font-size: 1rem;
+            margin-top: 1rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .cta-button:active {
+            transform: scale(0.98);
+            box-shadow: 0 2px 3px rgba(0,0,0,0.1);
+        }
+
+        .floating-element {
+            position: absolute;
+            pointer-events: none;
+            font-size: 24px;
+            opacity: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Missing You</h1>
+        </div>
+        <div class="content">
+            <p>As melodies of classical music linger,<br>
+               And Vrindavan's flavors dance on your tongue,<br>
+               My heart composes a symphony of longing,<br>
+               A beautiful piece, for you, unsung.</p>
+            <p>Ganpati's blessings illuminate your path,<br>
+               While I count the moments until you're near.<br>
+               Our reunion, a masterpiece in creation,<br>
+               A crescendo of love, pure and clear.</p>
+            <p id="loveQuote"></p>
+            <button class="cta-button">Send My Love</button>
+        </div>
+    </div>
+    <script>
+        const loveQuotes = [
+            "In the arithmetic of love, one plus one equals everything, and two minus one equals nothing. - Mignon McLaughlin",
+            "The best love is the kind that awakens the soul; that makes us reach for more. - Nicholas Sparks",
+            "I love you not only for what you are, but for what I am when I am with you. - Roy Croft"
+        ];
+
+        const floatingElements = ['🌸', '♪', '♥️', '✨'];
+
+        function createFloatingElement() {
+            const element = document.createElement('div');
+            element.classList.add('floating-element');
+            element.style.left = Math.random() * 100 + 'vw';
+            element.style.top = '120vh';
+            element.innerHTML = floatingElements[Math.floor(Math.random() * floatingElements.length)];
+            document.body.appendChild(element);
+
+            gsap.to(element, {
+                y: '-130vh',
+                x: Math.random() * 50 - 25 + 'vw',
+                rotation: Math.random() * 360,
+                opacity: 0.7,
+                duration: Math.random() * 5 + 5,
+                ease: 'power1.inOut',
+                onComplete: () => element.remove()
+            });
+        }
+
+        // Animations
+        gsap.from('.header', {opacity: 0, y: -50, duration: 1, ease: 'power3.out'});
+        gsap.from('.content p', {opacity: 0, y: 30, duration: 1, stagger: 0.3, ease: 'power2.out'});
+        gsap.to('#loveQuote', {opacity: 1, duration: 2, delay: 2, ease: 'power2.inOut'});
+        gsap.from('.cta-button', {opacity: 0, y: 30, duration: 1, delay: 3, ease: 'back.out(1.7)'});
+
+        // Set random love quote
+        document.getElementById('loveQuote').textContent = loveQuotes[Math.floor(Math.random() * loveQuotes.length)];
+
+        // Create floating elements
+        setInterval(createFloatingElement, 1000);
+
+        // Button interaction
+        document.querySelector('.cta-button').addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            gsap.to('.cta-button', {
+                scale: 0.95,
+                duration: 0.1
+            });
+        });
+
+        document.querySelector('.cta-button').addEventListener('touchend', (e) => {
+            e.preventDefault();
+            gsap.to('.cta-button', {
+                scale: 1,
+                duration: 0.1
+            });
+            gsap.to('.container', {
+                backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                duration: 0.2,
+                yoyo: true,
+                repeat: 1
+            });
+        });
+    </script>
+</body>
+</html>
